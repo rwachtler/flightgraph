@@ -1,0 +1,5 @@
+#Ignore pom.properties
+target/m2e-wtp/web-resources/META-INF/maven/at.fhj.itm/flightgraph/pom.properties
+
+#Ignore MANIFEST-MF
+target/m2e-wtp/web-resources/META-INF/MANIFEST.MF
