@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.0" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+<display-name>FlightGraph</display-name>
+  <session-config>
+  <session-timeout>30</session-timeout>
+  </session-config>
+  <mime-mapping>
+  <extension>ico</extension>
+    <mime-type>image/x-icon</mime-type>
+  </mime-mapping>
+  <context-param>
+  <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/error.html</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/error.html</location>
+  </error-page>
+  
+  <filter>
+    <filter-name>CORS</filter-name>
+    <filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>
+
+    <init-param>
+        <param-name>cors.allowGenericHttpRequests</param-name>
+        <param-value>true</param-value>
+    </init-param>
+
+    <init-param>
+        <param-name>cors.allowOrigin</param-name>
+        <param-value>*</param-value>
+    </init-param>
+
+    <init-param>
+        <param-name>cors.allowSubdomains</param-name>
+        <param-value>false</param-value>
+    </init-param>
+
+    <init-param>
+        <param-name>cors.supportedMethods</param-name>
+        <param-value>GET, POST, HEAD, PUT, DELETE</param-value>
+    </init-param>
+
+    <init-param>
+        <param-name>cors.supportedHeaders</param-name>
+        <param-value>Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers</param-value>
+    </init-param>
+
+    <init-param>
+        <param-name>cors.supportsCredentials</param-name>
+        <param-value>true</param-value>
+    </init-param>
+
+    <init-param>
+        <param-name>cors.maxAge</param-name>
+        <param-value>3600</param-value>
+    </init-param>
+
+	</filter>
+	
+	<filter-mapping>
+	    <!-- CORS Filter mapping -->
+	    <filter-name>CORS</filter-name>
+	    <url-pattern>*</url-pattern>
+	</filter-mapping>
+</web-app>
