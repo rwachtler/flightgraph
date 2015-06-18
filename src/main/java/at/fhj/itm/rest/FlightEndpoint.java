@@ -140,7 +140,10 @@ public class FlightEndpoint
 		   restResponse.put(Config.REST_RESULT_DESCRIPTION, errorMessage);
 	   }
 	   
-	   return Response.ok(restResponse).build();
+	   return Response.ok(restResponse)
+					  .header("Access-Control-Allow-Origin", "*")
+				      .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+				      .build();
    }
 
    @GET
