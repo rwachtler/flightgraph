@@ -1,6 +1,8 @@
 package at.fhj.itm.rest;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -20,7 +22,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
+
+import at.fhj.itm.api.FlightStats;
 import at.fhj.itm.model.Flight;
+import at.fhj.itm.util.Config;
 
 /**
  * 
@@ -69,17 +74,57 @@ public class FlightEndpoint
       {
          entity = null;
       }
-      if (entity == null)
-      {
-         return Response.status(Status.NOT_FOUND).build();
+      
+      Map<String, Object> restResponse = new HashMap<String, Object>();
+      
+      if (entity != null) {
+          restResponse.put(Config.REST_RESULT_STATUS, Config.REST_RESULT_OK);
+          restResponse.put(Config.REST_RESULT_DATA, entity);  
+      } else {
+    	  // not found
+    	  restResponse.put(Config.REST_RESULT_STATUS, Config.REST_RESULT_ERROR);
+    	  restResponse.put(Config.REST_RESULT_DESCRIPTION, Config.REST_RESULT_ERROR_NOT_FOUND);
       }
-      return Response.ok(entity).build();
+     
+     return Response.ok(restResponse).build();
+      
+   }
+   
+   @GET
+   @Path("/all")
+   @Produces("application/json")
+   public Response findAll() {
+	   List<Flight> allFlights = listAll(0, 99999);
+	   
+	   Map<String, Object> restResponse = new HashMap<String, Object>();
+	   restResponse.put(Config.REST_RESULT_STATUS, Config.REST_RESULT_OK);
+	   restResponse.put(Config.REST_RESULT_DATA, allFlights);
+	   
+	   return Response.ok(restResponse).build();
+   }
+   
+   @GET
+   @Path("/nearest")
+   @Produces("application/json")
+   public Response findNearest() {
+	   // TODO: Implement real function
+	   
+	   List<Flight> allFlights = listAll(0, 99999);
+	   
+	   FlightStats fs = new FlightStats();
+	   fs.getNearest(45, -125, 40, -120, 5);
+	   
+	   Map<String, Object> restResponse = new HashMap<String, Object>();
+	   restResponse.put(Config.REST_RESULT_STATUS, Config.REST_RESULT_OK);
+	   restResponse.put(Config.REST_RESULT_DATA, allFlights);
+	   
+	   return Response.ok(restResponse).build();
    }
 
    @GET
    @Produces("application/json")
    public List<Flight> listAll(@QueryParam("start") Integer startPosition, @QueryParam("max") Integer maxResult)
-   {
+   {	   
       TypedQuery<Flight> findAllQuery = em.createQuery("SELECT DISTINCT f FROM Flight f LEFT JOIN FETCH f.departureAirport LEFT JOIN FETCH f.arrivalAirport ORDER BY f.id", Flight.class);
       if (startPosition != null)
       {
@@ -90,6 +135,7 @@ public class FlightEndpoint
          findAllQuery.setMaxResults(maxResult);
       }
       final List<Flight> results = findAllQuery.getResultList();
+      
       return results;
    }
 
