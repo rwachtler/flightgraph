@@ -13,6 +13,7 @@ public class Config {
 	public static String REST_RESULT_OK = "ok";
 	public static String REST_RESULT_ERROR = "error";
 	
+	public static String REST_RESULT_CREATED = "CREATED";
 	public static String REST_RESULT_ERROR_NOT_FOUND = "NOT_FOUND";
 	
 	// Flight stats API

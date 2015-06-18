@@ -30,7 +30,7 @@ public class FlightStats {
 				 .replace(Config.FLIGHT_STATS_SUB_RIGHT_LON, String.valueOf(rightLon))
 				 .replace(Config.FLIGHT_STATS_SUB_MAX_FLIGHTS, String.valueOf(maxFlights));
 		
-		try {
+		/*try {
 			URLConnection connection = new URL(url).openConnection();
 			connection.setRequestProperty("Accept-Charset", Config.CHARSET_UTF8);
 			
@@ -49,7 +49,7 @@ public class FlightStats {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 }
