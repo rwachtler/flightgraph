@@ -1,0 +1,17 @@
+Initial setup:
+
+- setup MySQL data connection for WildFly
+
+- make sure MySQL is running
+
+- in perstistence.xml for property "hibernate.hbm2ddl.auto" change value to "create"
+
+- start server
+
+- call http://localhost:8080/flightgraph/rest/setup (via browser or curl)
+
+- stop server
+
+- in perstistence.xml for property "hibernate.hbm2ddl.auto" change value to "update"
+
+- start server
