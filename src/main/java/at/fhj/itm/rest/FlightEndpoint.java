@@ -141,8 +141,8 @@ public class FlightEndpoint
 	   }
 	   
 	   return Response.ok(restResponse)
-					  .header("Access-Control-Allow-Origin", "*")
-				      .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+					  //.header("Access-Control-Allow-Origin", "*")
+				      //.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
 				      .build();
    }
 
