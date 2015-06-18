@@ -1,5 +1,12 @@
 package at.fhj.itm.rest;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +29,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import at.fhj.itm.api.FlightStats;
 import at.fhj.itm.model.Flight;
@@ -104,19 +115,30 @@ public class FlightEndpoint
    }
    
    @GET
-   @Path("/nearest")
+   @Path("/area/{topLat}/{leftLon}/{bottomLat}/{rightLon}")
    @Produces("application/json")
-   public Response findNearest() {
-	   // TODO: Implement real function
-	   
-	   List<Flight> allFlights = listAll(0, 99999);
-	   
-	   FlightStats fs = new FlightStats();
-	   fs.getNearest(45, -125, 40, -120, 5);
+   public Response findArea(@PathParam("topLat") float topLat, @PathParam("leftLon") float leftLon, @PathParam("bottomLat") float bottomLat, @PathParam("rightLon") float rightLon) {
 	   
 	   Map<String, Object> restResponse = new HashMap<String, Object>();
-	   restResponse.put(Config.REST_RESULT_STATUS, Config.REST_RESULT_OK);
-	   restResponse.put(Config.REST_RESULT_DATA, allFlights);
+	   
+	   FlightStats fs = new FlightStats();
+	   String apiResponse = fs.getFlightsInAreaFromApi(topLat, leftLon, bottomLat, rightLon, Config.FLIGHT_REQUEST_MAX);
+	   boolean requestSuccess = fs.checkApiResponseForSuccess(apiResponse);
+	   
+	   if (requestSuccess) {
+		   List<Flight> flightsInArea = fs.parseFlightsInAreaResponse(apiResponse);
+		   
+		   restResponse.put(Config.REST_RESULT_STATUS, Config.REST_RESULT_OK);
+		   restResponse.put(Config.REST_RESULT_DATA, flightsInArea);
+	   } else {
+		   // get error code and error message
+		   String errorCode = fs.getErrorCodeFromResponse(apiResponse);
+		   String errorMessage = fs.getErrorMessageFromResponse(apiResponse);
+		   
+		   restResponse.put(Config.REST_RESULT_STATUS, Config.REST_RESULT_ERROR);
+		   restResponse.put(Config.REST_RESULT_CODE, errorCode);
+		   restResponse.put(Config.REST_RESULT_DESCRIPTION, errorMessage);
+	   }
 	   
 	   return Response.ok(restResponse).build();
    }
