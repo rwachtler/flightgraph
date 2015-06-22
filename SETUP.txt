@@ -1,17 +1,47 @@
 Initial setup:
 
+# for running the server you need a JBoss WildFly 8.x installation
+# after importing the project you need to setup the MySQL data connection
+
 - setup MySQL data connection for WildFly
-
 - make sure MySQL is running
+- make sure your datasources in standalone.xml are configured to your needs
+   x the datasource in standalone.xml could look like this:
+	<datasources>
+	    <datasource jndi-name="java:jboss/datasources/MysqlCommentDS" pool-name="MysqlCommentsDSPool" enabled="true" use-java-context="true">
+                <connection-url>jdbc:mysql://localhost:3306/flightgraph</connection-url>
+                <driver-class>com.mysql.jdbc.Driver</driver-class>
+                <driver>mysql</driver>
+                <security>
+                    <user-name>root</user-name>
+                </security>
+             </datasource>
+	</datasources>
+   x additionally, you need to make sure that the MySQL driver is configured correctly (right underneath the <datasources> tag)
+	<drivers>
+	    <driver name="mysql" module="com.sql.mysql">
+                <driver-class>com.mysql.jdbc.Driver</driver-class>
+            </driver>
+	</drivers>
+   x in the wildfly installation folder, under wildfly-8.2.0.Final/modules/system/layers/base/com/mysql/main, there must be a file called module.xml with the following content:
+	<module xmlns="urn:jboss:module:1.0" name="com.mysql">
+	    <resources>
+		<resource-root path="mysql-connector-java-5.1.35-bin.jar"/>
+	    </resources>
+	    <dependencies>
+		<module name="javax.api"/>
+          </dependencies>
+	</module>
+   x and in the same folder there needs to be placed the MySQL connector jar file (with the file name as specified in the resource-root path element from above)
+- in persistence.xml, set the appropriate datasource name
+   x for the example above, this would look like this:
+	<jta-data-source>java:jboss/datasources/MysqlCommentDS</jta-data-source>
 
-- in perstistence.xml for property "hibernate.hbm2ddl.auto" change value to "create"
-
+- in persistence.xml for property "hibernate.hbm2ddl.auto" change value to "create"
 - start server
-
 - call http://localhost:8080/flightgraph/rest/setup (via browser or curl)
-
 - stop server
-
 - in perstistence.xml for property "hibernate.hbm2ddl.auto" change value to "update"
-
 - start server
+
+- now you can access everything via the index.html file provided in the flightgraph-web project

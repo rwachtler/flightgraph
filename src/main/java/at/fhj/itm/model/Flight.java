@@ -41,11 +41,19 @@ public class Flight implements Serializable
    private Airport arrivalAirport;
    
    // non-persistent attributes
+   private int flightStatsId;
    private double lat;
    private double lon;
    private int speed;
    private int altitude;
    private String tailNumber;
+   private int delay;
+   private String arrivalLocal;
+   private String departureLocal;
+   private String arrivalUtc;
+   private String departureUtc;
+   private String departureAirportCode;
+   private String arrivalAirportCode;
 
    public Long getId()
    {
@@ -159,6 +167,14 @@ public class Flight implements Serializable
       this.arrivalAirport = arrivalAirport;
    }
    
+   public int getFlightStatsId() {
+	   return flightStatsId;
+   }
+   
+   public void setFlightStatsId(int flightStatsId) {
+	   this.flightStatsId = flightStatsId; 
+   }
+   
    public double getLat() {
 		return lat;
 	}
@@ -197,5 +213,61 @@ public class Flight implements Serializable
 
 	public void setTailNumber(String tailNumber) {
 		this.tailNumber = tailNumber;
+	}
+	
+	public int getDelay() {
+		return delay;
+	}
+	
+	public void setDelay(int delay) {
+		this.delay = delay;
+	}
+
+	public String getArrivalLocal() {
+		return arrivalLocal;
+	}
+
+	public void setArrivalLocal(String arrivalLocal) {
+		this.arrivalLocal = arrivalLocal;
+	}
+
+	public String getDepartureLocal() {
+		return departureLocal;
+	}
+
+	public void setDepartureLocal(String departureLocal) {
+		this.departureLocal = departureLocal;
+	}
+
+	public String getArrivalUtc() {
+		return arrivalUtc;
+	}
+
+	public void setArrivalUtc(String arrivalUtc) {
+		this.arrivalUtc = arrivalUtc;
+	}
+
+	public String getDepartureUtc() {
+		return departureUtc;
+	}
+
+	public void setDepartureUtc(String departureUtc) {
+		this.departureUtc = departureUtc;
+	}
+
+	public String getDepartureAirportCode() {
+		return departureAirportCode;
+	}
+
+	public void setDepartureAirportCode(String departureAirportCode) {
+		this.departureAirportCode = departureAirportCode;
+	}
+
+	public String getArrivalAirportCode() {
+		return arrivalAirportCode;
+	}
+
+	public void setArrivalAirportCode(String arrivalAirportCode) {
+		this.arrivalAirportCode = arrivalAirportCode;
 	}
 }

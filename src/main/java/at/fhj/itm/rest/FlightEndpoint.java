@@ -35,6 +35,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import at.fhj.itm.api.FlightStats;
+import at.fhj.itm.model.Airport;
 import at.fhj.itm.model.Flight;
 import at.fhj.itm.util.Config;
 
@@ -127,6 +128,7 @@ public class FlightEndpoint
 	   
 	   if (requestSuccess) {
 		   List<Flight> flightsInArea = fs.parseFlightsInAreaResponse(apiResponse);
+		   flightsInArea = fs.addFlightDetailInformation(flightsInArea);
 		   
 		   restResponse.put(Config.REST_RESULT_STATUS, Config.REST_RESULT_OK);
 		   restResponse.put(Config.REST_RESULT_DATA, flightsInArea);
